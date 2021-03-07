@@ -10,6 +10,6 @@
 /run/numberOfThreads 4
 #
 # Initialize kernel
-/lumi/det/setGDML ../geometry/lumi_prex2.gdml
+/lumi/det/setGDML ./geometry/moller_target_shield.gdml
 /run/initialize
-/lumi/gun/beamtype 1
+/lumi/gun/beamtype 0
