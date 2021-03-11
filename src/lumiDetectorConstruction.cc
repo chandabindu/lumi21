@@ -37,62 +37,48 @@ G4VPhysicalVolume* lumiDetectorConstruction::Construct(){
 
   G4VPhysicalVolume* world_PV = gdmlParser.GetWorldVolume();
 
-
+  
   //  Visualization
   G4VisAttributes* motherVisAtt = new G4VisAttributes(G4Colour(1.0,1.0,1.0));
   motherVisAtt->SetVisibility(true);
-  motherVisAtt->SetForceWireframe(true);
+  // motherVisAtt->SetForceWireframe(true);
   world_PV->GetLogicalVolume()->SetVisAttributes(motherVisAtt);
 
-  G4VisAttributes* VacVisAtt = new G4VisAttributes(G4Colour(1.0,1.0,1.0));
-  VacVisAtt->SetVisibility(true);
-  VacVisAtt->SetForceWireframe(true);
-  G4VisAttributes* CuVisAtt = new G4VisAttributes(G4Colour(1.0,0.5,0.1));
-  CuVisAtt->SetVisibility(true);
-  CuVisAtt->SetForceSolid(true);
-  G4VisAttributes* SSVisAtt = new G4VisAttributes(G4Colour(0.0,0.0,1.0));
-  SSVisAtt->SetVisibility(true);
-  SSVisAtt->SetForceSolid(true);
-  G4VisAttributes* AlVisAtt = new G4VisAttributes(G4Colour(0.4,0.6,0.4));
-  AlVisAtt->SetVisibility(true);
-  AlVisAtt->SetForceWireframe(true);
-  G4VisAttributes* QtzVisAtt = new G4VisAttributes(G4Colour(0.0,0.0,1.0));
-  QtzVisAtt->SetVisibility(true);
-  QtzVisAtt->SetForceSolid(true);
-  G4VisAttributes* FeVisAtt = new G4VisAttributes(G4Colour(0.6,0.7,0.8));
-  FeVisAtt->SetVisibility(true);
-  FeVisAtt->SetForceSolid(true);
-  G4VisAttributes* CW70VisAtt= new G4VisAttributes(G4Colour(0.7,0.7,0.9));
-  CW70VisAtt->SetVisibility(true);
-  CW70VisAtt->SetForceSolid(true);
+  const G4GDMLAuxMapType* auxmap = gdmlParser.GetAuxMap();
+  G4GDMLAuxMapType::const_iterator map_iter = auxmap->begin();
+  while (map_iter!=auxmap->end()){
+    G4GDMLAuxListType::const_iterator list_iter = (*map_iter).second.begin();
 
-  G4VisAttributes* visAtt[7]={VacVisAtt,CuVisAtt,SSVisAtt,AlVisAtt,QtzVisAtt,FeVisAtt,CW70VisAtt};
-  G4String mat_name[7]={"Vacuum","Copper","StainlessSteel","Aluminum","Quartz","Iron","matCW70"};
-  G4int nMat =7;
-  G4LogicalVolume* daughter_logic;
-  G4LogicalVolume* daughter2_logic;
-
-  
-  for(int iVol=0; iVol<world_PV->GetLogicalVolume()->GetNoDaughters();iVol++){
-    
-    daughter_logic = world_PV->GetLogicalVolume()->GetDaughter(iVol)->GetLogicalVolume();
-    
-    for(int imat =0; imat<nMat;imat++){
-      if(daughter_logic->GetMaterial()->GetName().compare(mat_name[imat])==0){
-	daughter_logic->SetVisAttributes(visAtt[imat]);	
+    while (list_iter!=(*map_iter).second.end()){
+      const G4VisAttributes* visAtt = ((*map_iter).first)->GetVisAttributes();
+      if((*list_iter).type=="Visibility"){
+	G4Colour colour(1.0,1.0,1.0);
+	if (visAtt)
+	  colour = visAtt->GetColour();
+	G4VisAttributes newAtt(colour);
+	newAtt.SetForceSolid(true);
+	newAtt.SetForceWireframe(false);
+	if( (*list_iter).value=="true"){
+	  newAtt.SetVisibility(true);
+	}
+	if( (*list_iter).value=="false")
+	  newAtt.SetVisibility(false);
+	
+	((*map_iter).first)->SetVisAttributes(newAtt);
       }
-    }
-    
-    for(int jVol=0;jVol<daughter_logic->GetNoDaughters();jVol++){
-      daughter2_logic = daughter_logic->GetDaughter(jVol)->GetLogicalVolume();
-      for(int imat =0; imat<nMat;imat++){
-	if(daughter2_logic->GetMaterial()->GetName().compare(mat_name[imat])==0){
-	  daughter2_logic->SetVisAttributes(visAtt[imat]);	
+      
+      if ((*list_iter).type == "Color"){
+	G4Colour colour(1.0,1.0,1.0);
+	if (G4Colour::GetColour( (*list_iter).value, colour)){
+	  G4VisAttributes colourAtt(colour);
+	  ((*map_iter).first)->SetVisAttributes(colourAtt);
 	}
       }
+	
+      list_iter++;
     }
+    map_iter++;
   }
-
 
   return world_PV;
 }
@@ -164,21 +150,21 @@ G4VPhysicalVolume* lumiDetectorConstruction::ConstructDetector(){
   
   
   // Target 
-  G4double target_thickness = 1*cm;
-  G4double target_radius = 5*cm;
-  G4Material *target_material = nistManager->FindOrBuildMaterial("G4_Al");
-  G4Tubs *target_Solid = new G4Tubs("Target_Solid",
-  				    0.,target_radius,
-  				    0.5*target_thickness,0.*deg,360.*deg);
-  G4LogicalVolume *target_LV = new G4LogicalVolume(target_Solid,target_material,"target_LV");
-  G4VPhysicalVolume *target_PV = new G4PVPlacement(0,
-  						   G4ThreeVector(0.,0.,0.),
-  						   target_LV,
-  						   "target_PV",
-  						   world_LV,
-  						   false,
-  						   0,
-  						   checkOverlaps);
+  // G4double target_thickness = 1*cm;
+  // G4double target_radius = 5*cm;
+  // G4Material *target_material = nistManager->FindOrBuildMaterial("G4_Al");
+  // G4Tubs *target_Solid = new G4Tubs("Target_Solid",
+  // 				    0.,target_radius,
+  // 				    0.5*target_thickness,0.*deg,360.*deg);
+  // G4LogicalVolume *target_LV = new G4LogicalVolume(target_Solid,target_material,"target_LV");
+  // G4VPhysicalVolume *target_PV = new G4PVPlacement(0,
+  // 						   G4ThreeVector(0.,0.,0.),
+  // 						   target_LV,
+  // 						   "target_PV",
+  // 						   world_LV,
+  // 						   false,
+  // 						   0,
+  // 						   checkOverlaps);
 
   
   G4cout << "Return World_PV" << G4endl;
