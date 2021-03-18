@@ -34,6 +34,8 @@
 # Specify zoom value:
 /vis/viewer/zoom 1.6
 #
+/vis/viewer/set/cutawayMode intersection
+/vis/viewer/addCutawayPlane 0.0 0.0 0.0 mm 1.0 0.0 0.0
 # Specify style (surface or wireframe):
 #/vis/viewer/set/style wireframe
 #

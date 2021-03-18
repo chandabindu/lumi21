@@ -55,7 +55,11 @@
       <second ref = "Shield_tube"/>
       <position name ="concreteSub" lunit="mm" x="0" y="1087" z="0" />
     </subtraction>
-    
+
+    <tube name="VirtualPlane_forward_hole"
+	  startphi="0" deltaphi="360" aunit="deg"
+	  rmax="500" rmin="50" z="1" lunit="mm"/>
+
     <tube name="VirtualPlane_solid"
 	  startphi="0" deltaphi="360" aunit="deg"
 	  rmax="1900" rmin="0" z="1" lunit="mm"/>
@@ -146,15 +150,25 @@
       <auxiliary auxtype="DetType" auxvalue="lowenergyneutral"/>
     </volume>
 
-    <volume name="targetVirtualSphere_log">
+    <volume name="forwardDetector_log">
       <materialref ref="G4_Galactic"/>
-      <solidref ref="targetSphere_solid"/>
+      <solidref ref="VirtualPlane_forward_hole"/>
       <auxiliary auxtype="Visibility" auxvalue="true"/>
       <auxiliary auxtype="Color" auxvalue="yellow"/>
       <auxiliary auxtype="Alpha" auxvalue="1"/>
       <auxiliary auxtype="SensDet" auxvalue="planeDet"/>
-      <auxiliary auxtype="DetNo" auxvalue="5530"/>
+      <auxiliary auxtype="DetNo" auxvalue="1"/>
     </volume>
+
+    <!-- <volume name="targetVirtualSphere_log"> -->
+    <!--   <materialref ref="G4_Galactic"/> -->
+    <!--   <solidref ref="targetSphere_solid"/> -->
+    <!--   <auxiliary auxtype="Visibility" auxvalue="true"/> -->
+    <!--   <auxiliary auxtype="Color" auxvalue="yellow"/> -->
+    <!--   <auxiliary auxtype="Alpha" auxvalue="1"/> -->
+    <!--   <auxiliary auxtype="SensDet" auxvalue="planeDet"/> -->
+    <!--   <auxiliary auxtype="DetNo" auxvalue="5530"/> -->
+    <!-- </volume> -->
 
     <volume name="skyshineVacuumDet2VirtualPlane_log">
       <materialref ref="G4_Galactic"/>
@@ -184,8 +198,8 @@
       </physvol>
 
       <physvol>
-	<volumeref ref="h2Targ"/>
-	<position name="targ_center1" unit="mm" x="0" y="0" z="0"/>
+      	<volumeref ref="h2Targ"/>
+      	<position name="targ_center1" unit="mm" x="0" y="0" z="0"/>
       </physvol>
 
       <physvol>
@@ -228,10 +242,18 @@
                   z="2851 + 100"/>
       </physvol>
       
-      <physvol name="targetVirtualSphere_phys">
-	<volumeref ref="targetVirtualSphere_log"/>
-	<position name="targ_center1" unit="mm" x="0" y="0" z="0"/>	
+      
+      <physvol>
+	<volumeref ref="forwardDetector_log"/>
+	<position name="forwardDetector_pos" unit="mm" x="0" y="0"
+                  z="1000"/>
       </physvol>
+      
+
+      <!-- <physvol name="targetVirtualSphere_phys"> -->
+      <!-- 	<volumeref ref="targetVirtualSphere_log"/> -->
+      <!-- 	<position name="targ_center1" unit="mm" x="0" y="0" z="0"/>	 -->
+      <!-- </physvol> -->
       
       <physvol    name="skyshineVacuumDet2VirtualPlane_phys">
 	<volumeref ref="skyshineVacuumDet2VirtualPlane_log"/>
