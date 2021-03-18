@@ -11,7 +11,7 @@ lumiPrimaryGeneratorAction::lumiPrimaryGeneratorAction()
 
   G4ParticleDefinition* particleDefinition = G4ParticleTable::GetParticleTable()->FindParticle("e-");
   fParticleGun->SetParticleDefinition(particleDefinition);
-  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,-1.0));
+  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.0));
   fParticleGun->SetParticleEnergy(11*GeV);
 
   raster_center_x = 0.0;
