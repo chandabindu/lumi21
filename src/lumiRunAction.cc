@@ -41,7 +41,7 @@ lumiRunAction::lumiRunAction(lumiEventAction* eventAction)
     analysisManager->CreateNtupleDColumn("Etot"); // 13
 
     analysisManager->CreateNtupleIColumn("trackID"); // 14
-    analysisManager->CreateNtupleIColumn("creatorID"); // 15
+    analysisManager->CreateNtupleSColumn("creatorProcess"); // 15
     analysisManager->CreateNtupleIColumn("particleID"); // 16
 
     analysisManager->CreateNtupleDColumn("px"); // 17

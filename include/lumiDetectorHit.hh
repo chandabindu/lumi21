@@ -55,7 +55,10 @@ public:
 
   inline void SetCreatorID(G4int i){ creatorID=i;}
   inline G4int GetCreatorID() const {return creatorID;}
-  
+
+  inline void SetCreatorProcess(G4String i){ creatorProcess=i;}
+  inline G4String GetCreatorProcess() const {return creatorProcess;}
+
   inline void SetParticleID(G4int i){ partID=i;}
   inline G4int GetParticleID() const {return partID;}
 
@@ -73,6 +76,7 @@ private:
 
   G4int trackID;
   G4int creatorID;
+  G4String creatorProcess;
   G4int partID;
 };
 

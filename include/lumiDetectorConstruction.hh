@@ -15,7 +15,7 @@ public:
   virtual ~lumiDetectorConstruction();
   
   virtual G4VPhysicalVolume* Construct();
-  virtual G4VPhysicalVolume* ConstructDetector();
+  // virtual G4VPhysicalVolume* ConstructDetector();
   virtual void ConstructSDandField();
 
   void SetGDML(const G4String& filename);
